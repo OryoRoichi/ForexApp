@@ -8,7 +8,6 @@ import model.CurrencyPair;
 import model.ResponseBody;
 import model.mapping.CurrencyPairMapper;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.http.HttpClient;
@@ -19,6 +18,7 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
+//https://fcsapi.com/document/forex-api
 public class Connection {
 
     private final ObjectMapper objectMapper;
