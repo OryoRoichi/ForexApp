@@ -1,8 +1,6 @@
-package model;
+package connection.httpmodel;
 
-import java.util.List;
-
-public class ResponseBody {
+public class ResponseBody<T> {
 
     private String status;
 
@@ -10,7 +8,7 @@ public class ResponseBody {
 
     private String msg;
 
-    private List<Object> response;
+    private T response;
 
     public String getStatus() {
         return status;
@@ -36,11 +34,11 @@ public class ResponseBody {
         this.msg = msg;
     }
 
-    public List<Object> getResponse() {
+    public T getResponse() {
         return response;
     }
 
-    public void setResponse(List<Object> response) {
+    public void setResponse(T response) {
         this.response = response;
     }
 }

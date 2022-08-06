@@ -1,21 +1,29 @@
 package model;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+
 import java.time.LocalDateTime;
 
 public class CurrencyPair {
 
     private int id;
 
+    @JsonAlias("o")
     private float open;
 
+    @JsonAlias("h")
     private float high;
 
+    @JsonAlias("l")
     private float low;
 
+    @JsonAlias("c")
     private float price;
 
+    @JsonAlias("s")
     private String symbol;
 
+    @JsonAlias("tm")
     private LocalDateTime time;
 
     public int getId() {

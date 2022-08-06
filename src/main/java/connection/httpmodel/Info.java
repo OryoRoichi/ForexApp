@@ -1,4 +1,4 @@
-package model;
+package connection.httpmodel;
 
 import java.time.LocalDateTime;
 
