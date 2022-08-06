@@ -42,4 +42,12 @@ public class Symbol {
                 ", symbol='" + symbol + '\'' +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof Symbol){
+            return this.getSymbol().equals(((Symbol) obj).getSymbol());
+        }
+        return false;
+    }
 }
