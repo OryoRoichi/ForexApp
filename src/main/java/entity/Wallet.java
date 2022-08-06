@@ -1,2 +1,4 @@
-package entity;public class Wallet {
+package entity;
+
+public class Wallet {
 }
