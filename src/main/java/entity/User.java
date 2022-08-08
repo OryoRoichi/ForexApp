@@ -7,10 +7,10 @@ import java.util.Set;
 
 public class User {
 
-    Set<Wallet> walletSet;
+    Wallet wallet;
 
-    public User(Set<Wallet> walletSet) {
-        this.walletSet = new HashSet<>();
+    public User() {
+        this.wallet = new Wallet(0,"USD");
     }
 }
 

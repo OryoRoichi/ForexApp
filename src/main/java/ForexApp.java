@@ -12,6 +12,14 @@ import java.util.List;
 
 public class ForexApp {
 
+
+    /*
+user (wallet)
+Wallet(Map<Currency,currentState>,List<history>)
+History(user,operation,date)
+Enum operation
+     */
+
     public static void main(String[] args) throws IOException {
         DataSource dataSource = new DataSource();
         //Symbol s = new Symbol();
@@ -33,18 +41,6 @@ public class ForexApp {
         Wallet wallet = new Wallet(10000, "usd");
         System.out.println(wallet.toString());
         wallet.exchange("usd", "eur", 1000);
-        System.out.println(wallet.toString());
-
-        IOService ioService = new IOService();
-        System.out.println("1 валюта");
-
-        String v1 = ioService.read();
-        System.out.println("1 валюта");
-
-        String v2 = ioService.read();
-
-        String sum = ioService.read();
-        wallet.exchange(v1, v2, Integer.parseInt(sum));
         System.out.println(wallet.toString());
 
         wallet.printHistory();
