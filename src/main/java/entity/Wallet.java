@@ -26,7 +26,7 @@ public class Wallet {
 
     //метод обмен валют параметры
     //srcCurrency = валюта которую хотим поменять
-    //валюта на оторую хотим поменять
+    //targetCurrency = валюта на которую хотим поменять
     //sum сумма, которую хотим поменять
     public void exchange(String srcCurrency, String targetCurrency, int sum){
         srcCurrency = srcCurrency.toUpperCase();     //Возводим строку в верхний регитр
