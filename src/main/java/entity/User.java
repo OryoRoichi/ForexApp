@@ -4,10 +4,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class User {
+    String name;
 
-    Set<Wallet> walletSet;
+    Wallet wallet;
 
-    public User(Set<Wallet> walletSet) {
-        this.walletSet = new HashSet<>();
+    public User(String name) {
+        this.wallet = new Wallet();
+        this.name= name;
     }
 }
