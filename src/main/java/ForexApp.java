@@ -3,12 +3,7 @@ import entity.Wallet;
 import model.Symbol;
 
 import java.util.List;
-/*
-user (wallet)
-Wallet(Map<Currency,currentState>,List<history>)
-History(user,operation,date)
-Enum operation
- */
+
 public class ForexApp {
 
     public static void main(String[] args) {
@@ -18,8 +13,11 @@ public class ForexApp {
         Wallet wallet = new Wallet();
 
         wallet.exchange("usd","eur",10);
+
         wallet.add("afr",100);
         wallet.cashIssue("usd", 50);
+        wallet.add("usd", 0);
+        wallet.readHystory();
         wallet.printCurrMap();
 
     }

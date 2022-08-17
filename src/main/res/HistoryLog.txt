@@ -1,0 +1,1 @@
+History{operation=ADD, fromCurr='USD', oldAmount=40 + 0 -> toCurr='USD', newAmount=40}
