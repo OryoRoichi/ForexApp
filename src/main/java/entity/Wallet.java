@@ -1,5 +1,7 @@
 package entity;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import data.DataSource;
 import entity.enumiration.Operation;
 import model.CurrencyPair;
@@ -18,6 +20,7 @@ public class Wallet {
     private Map<String, Integer> currMAp;//Map<Currency,currentState>
     private List<History> historyList;
     private List<Symbol> list;
+    private ObjectMapper objectMapper = new ObjectMapper();
 
     public Wallet() {
         this.dataSource = new DataSource();
@@ -28,52 +31,25 @@ public class Wallet {
         currMAp.put(currency, currentState);//упаковываем валюту в мапу
         list = dataSource.getSymbolsList();
     }
+    private void writeHistoryLog(History history) throws JsonProcessingException {
+        File file = new File("src\\main\\res\\");
+        String json = objectMapper.writeValueAsString(history);
+        File name = new File(getFileName(file, "log"));
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(name, true))) {
+            writer.write(json);
+        } catch (IOException e) {
+            System.out.println(" неожиданная ошибка при записи в JSON");
+        }
+    }
 
-    private void writeHistoryLog(String in) throws FileNotFoundException {
-        OutputStream out = new BufferedOutputStream(new FileOutputStream(new File("src\\main\\res\\HistoryLog.txt")));
-        String res = in;
-        try {
-            out.write(res.getBytes());
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            out.flush();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        try {
-            out.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    private String getFileName(File file, String log) {
+        return file.getAbsolutePath() + File.separator + log;
     }
-    public void readHystory() {
-        File file = new File("src\\main\\res\\HistoryLog.txt");
-        InputStream in = null;
-        try {
-            in = new BufferedInputStream(new FileInputStream(file));
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
-        }
-        byte[] buffer = new byte[1024];
-        String res = "";
-        while(true){
-            try {
-                if (!(in.read(buffer) != -1)) break;
-            } catch (IOException e) {
-                throw new RuntimeException(e);
-            }
-            res = res.concat(new String(buffer)).concat("\n");
-        }
-        try {
-            in.close();
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-        res.trim();
-        System.out.println(res);
+
+    private void readHistory(){
+
     }
+
     private Symbol pairSearcher(String fromCurr, String toCurr, String pairOne, String pairTwo) {
         pairOne = fromCurr + "/" + toCurr;  //Создаём пару
         pairTwo = toCurr + "/" + fromCurr;
@@ -118,32 +94,37 @@ public class Wallet {
         }
         currMAp.put(fromCurr, currMAp.get(fromCurr) - amount);
         currMAp.put(toCurr, newSum);
+        History exchange = new History.Builder()
+                .operation(Operation.EXCHANGE)
+                .fromCurr(fromCurr)
+                .oldAmount(currMAp.get(fromCurr)+amount)
+                .toCurr(toCurr)
+                .newAmount(currMAp.get(toCurr))
+                .sum(amount)
+                .build();
         try {
-            writeHistoryLog(new History(Operation.EXCHANGE,
-                    fromCurr,currMAp.get(fromCurr)+amount,
-                    amount,
-                    toCurr,currMAp.get(toCurr)).toString());
-        } catch (FileNotFoundException e) {
-            throw new RuntimeException(e);
+            writeHistoryLog(exchange);
+        } catch (JsonProcessingException e) {
+            System.out.println("ошибка json exeption");
         }
-
     }
-
-
-
-
 
     public void add(String toCurr, int amount) {
         toCurr = toCurr.toUpperCase();
         if (currMAp.containsKey(toCurr)) {
             currMAp.put(toCurr, currMAp.get(toCurr) + amount);
+            History add = new History.Builder()
+                    .operation(Operation.ADD)
+                    .fromCurr(toCurr)
+                    .oldAmount(currMAp.get(toCurr) - amount)
+                    .toCurr(toCurr)
+                    .newAmount(currMAp.get(toCurr))
+                    .sum(amount)
+                    .build();
             try {
-                writeHistoryLog(new History(Operation.ADD,
-                        toCurr, currMAp.get(toCurr) - amount,
-                        amount,
-                        toCurr, currMAp.get(toCurr)).toString());
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
+                writeHistoryLog(add);
+            } catch (JsonProcessingException e) {
+                System.out.println("ошибка json exeption");
             }
 
         } else {
@@ -156,13 +137,18 @@ public class Wallet {
         toCurr = toCurr.toUpperCase();
         if (currMAp.containsKey(toCurr)) {
             currMAp.put(toCurr, currMAp.get(toCurr) - amount);
+            History add = new History.Builder()
+                    .operation(Operation.ISSUE)
+                    .fromCurr(toCurr)
+                    .oldAmount(currMAp.get(toCurr) + amount)
+                    .toCurr(toCurr)
+                    .newAmount(currMAp.get(toCurr))
+                    .sum(amount)
+                    .build();
             try {
-                writeHistoryLog(new History(Operation.ISSUE,
-                        toCurr, currMAp.get(toCurr) + amount,
-                        amount,
-                        toCurr, currMAp.get(toCurr)).toString());
-            } catch (FileNotFoundException e) {
-                throw new RuntimeException(e);
+                writeHistoryLog(add);
+            } catch (JsonProcessingException e) {
+                System.out.println("ошибка json exeption");
             }
         } else {
             System.out.println("NOSuchCurrency");

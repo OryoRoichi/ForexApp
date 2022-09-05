@@ -13,11 +13,10 @@ public class ForexApp {
         Wallet wallet = new Wallet();
 
         wallet.exchange("usd","eur",10);
-
         wallet.add("afr",100);
         wallet.cashIssue("usd", 50);
         wallet.add("usd", 0);
-        wallet.readHystory();
+
         wallet.printCurrMap();
 
     }

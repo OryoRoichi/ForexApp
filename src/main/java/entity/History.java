@@ -2,8 +2,6 @@ package entity;
 
 import entity.enumiration.Operation;
 
-import java.time.LocalDateTime;
-
 public class History {
     Operation operation;
     private String fromCurr;
@@ -12,11 +10,12 @@ public class History {
     private int oldAmount;
     private int newAmount;
 
+    public History(){}
 
     public History(Operation operation,
-                   String fromCurr,int oldAmount,
+                   String fromCurr, int oldAmount,
                    int sum,
-                   String toCurr,int newAmount) {
+                   String toCurr, int newAmount) {
         this.operation = operation;
         this.fromCurr = fromCurr;
         this.sum = sum;
@@ -25,35 +24,46 @@ public class History {
         this.newAmount = newAmount;
     }
 
-    @Override
-    public String toString() {
-        switch (operation) {
-            case EXCHANGE:
-                return "History{" +
-                        "operation=" + operation +
-                        ", fromCurr='" + fromCurr + '\'' +
-                        ", oldAmount=" + oldAmount + " - " + sum +
-                        " -> toCurr='" + toCurr + '\'' +
-                        ", newAmount=" + newAmount +
-                        '}';
-            case ADD:
-                return "History{" +
-                        "operation=" + operation +
-                        ", fromCurr='" + fromCurr + '\'' +
-                        ", oldAmount=" + oldAmount + " + " + sum +
-                        " -> toCurr='" + toCurr + '\'' +
-                        ", newAmount=" + newAmount +
-                        '}';
-            case ISSUE:
-                return "History{" +
-                        "operation=" + operation +
-                        ", fromCurr='" + fromCurr + '\'' +
-                        ", oldAmount=" + oldAmount + " - " + sum +
-                        " -> toCurr='" + toCurr + '\'' +
-                        ", newAmount=" + newAmount +
-                        '}';
-            default:
-                return "History";
+
+    public static class Builder {
+
+        Operation operation;
+        private String fromCurr;
+        private int sum;
+        private String toCurr;
+        private int oldAmount;
+        private int newAmount;
+
+        public Builder operation(Operation operation) {
+            this.operation = operation;
+            return this;
+        }
+
+        public Builder sum(int sum) {
+            this.sum = sum;
+            return this;
+        }
+
+        public Builder fromCurr(String fromCurr) {
+            this.fromCurr = fromCurr;
+            return this;
+        }
+        public Builder toCurr(String toCurr) {
+            this.toCurr = toCurr;
+            return this;
+        }
+
+        public Builder oldAmount(int oldAmount) {
+            this.oldAmount = oldAmount;
+            return this;
+        }
+
+        public Builder newAmount(int newAmount) {
+            this.newAmount = newAmount;
+            return this;
+        }
+        public History build() {
+            return new History(this.operation , this.fromCurr ,this.oldAmount, this.sum ,this.toCurr  ,this.newAmount);
         }
     }
 }
