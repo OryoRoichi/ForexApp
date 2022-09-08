@@ -24,6 +24,29 @@ public class History {
         this.newAmount = newAmount;
     }
 
+    public Operation getOperation() {
+        return operation;
+    }
+
+    public String getFromCurr() {
+        return fromCurr;
+    }
+
+    public int getSum() {
+        return sum;
+    }
+
+    public String getToCurr() {
+        return toCurr;
+    }
+
+    public int getOldAmount() {
+        return oldAmount;
+    }
+
+    public int getNewAmount() {
+        return newAmount;
+    }
 
     public static class Builder {
 

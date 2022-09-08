@@ -21,8 +21,10 @@ public class Wallet {
     private List<History> historyList;
     private List<Symbol> list;
     private ObjectMapper objectMapper = new ObjectMapper();
+    private int id;
 
-    public Wallet() {
+    public Wallet(int id) {
+        this.id = id;
         this.dataSource = new DataSource();
         this.currMAp = new HashMap<>();
         this.historyList = new ArrayList<>();
@@ -31,12 +33,14 @@ public class Wallet {
         currMAp.put(currency, currentState);//упаковываем валюту в мапу
         list = dataSource.getSymbolsList();
     }
+
     private void writeHistoryLog(History history) throws JsonProcessingException {
-        File file = new File("src\\main\\res\\");
+        File directory = new File("src\\main\\res\\Historylog\\");
         String json = objectMapper.writeValueAsString(history);
-        File name = new File(getFileName(file, "log"));
+        String historyFileName = "wallet" + String.valueOf(id);
+        File name = new File(getFileName(directory, historyFileName));
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(name, true))) {
-            writer.write(json);
+            writer.write(json+"\n");
         } catch (IOException e) {
             System.out.println(" неожиданная ошибка при записи в JSON");
         }
@@ -46,8 +50,22 @@ public class Wallet {
         return file.getAbsolutePath() + File.separator + log;
     }
 
-    private void readHistory(){
+    public void getHistoryById(int id){
+        try {
+            readHistory(id);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
+    private void readHistory(int id) throws IOException {
+        File file = new File("src\\main\\res\\Historylog\\" + "wallet" + String.valueOf(id));
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String str;
+        while ((str = reader.readLine()) != null)
+        {
+            System.out.println(str);
+        }
     }
 
     private Symbol pairSearcher(String fromCurr, String toCurr, String pairOne, String pairTwo) {
@@ -82,7 +100,7 @@ public class Wallet {
         }
 
         List<CurrencyPair> currencyPairs = dataSource.getPairBySymbol(found);
-        if (currencyPairs == null && currencyPairs.size() == 0) {
+        if (currencyPairs == null) {
             System.out.println("Проблема с доступом к Forex");
             return;
         }
@@ -97,7 +115,7 @@ public class Wallet {
         History exchange = new History.Builder()
                 .operation(Operation.EXCHANGE)
                 .fromCurr(fromCurr)
-                .oldAmount(currMAp.get(fromCurr)+amount)
+                .oldAmount(currMAp.get(fromCurr) + amount)
                 .toCurr(toCurr)
                 .newAmount(currMAp.get(toCurr))
                 .sum(amount)
@@ -124,6 +142,7 @@ public class Wallet {
             try {
                 writeHistoryLog(add);
             } catch (JsonProcessingException e) {
+                e.printStackTrace();
                 System.out.println("ошибка json exeption");
             }
 
