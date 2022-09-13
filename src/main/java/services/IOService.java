@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class IOService {
+public class IOService implements IOServiceInterface {
     private BufferedReader reader;
 
     public IOService() {
@@ -15,6 +15,14 @@ public class IOService {
     }
     public void write(String message) {
         System.out.println(message);
+    }
+
+    public void writeUnknownError() {
+        write("Неизвестная ошибка. Попробуйте еще раз");
+    }
+
+    public String toUpperCase(String str) {
+        return str.toUpperCase();
     }
 
 }

@@ -1,0 +1,4 @@
+user (wallet)
+Wallet (Map<Currency,currentState>,List<history>)
+History(operation)(добавить билдер)
+Enum operation

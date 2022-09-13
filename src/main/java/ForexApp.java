@@ -1,26 +1,36 @@
 import data.DataSource;
 import entity.Wallet;
 import model.Symbol;
+import model.history.History;
+import model.history.Period;
+import services.IOService;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-/*
-user (wallet)
-Wallet(Map<Currency,currentState>,List<history>)
-History(user,operation,date)
-Enum operation
- */
+
 public class ForexApp {
 
+
+
+
     public static void main(String[] args) {
-        DataSource dataSource = new DataSource();
-        Symbol s = new Symbol();
-        s.setSymbol("EUR/USD");
-        Wallet wallet = new Wallet();
+        IOService ioService = new IOService() ;
+        String s = "abc";
+        System.out.println(ioService.toUpperCase(s));
+    }
+}
+       /* DataSource dataSource = new DataSource();
+            }
 
         wallet.exchange("usd","eur",10);
         wallet.add("afr",100);
         wallet.cashIssue("usd", 50);
-        wallet.printCurrMap();
+        wallet.add("usd", 0);
+        wallet.getHistoryById(1011);
+
+        wallet.printCurrMap();//
 
     }
-}
+} */

@@ -9,7 +9,7 @@ public class User {
     Wallet wallet;
 
     public User(String name) {
-        this.wallet = new Wallet();
+        this.wallet = new Wallet(1011);
         this.name= name;
     }
 }
