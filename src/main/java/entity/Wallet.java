@@ -6,6 +6,7 @@ import data.DataSource;
 import entity.enumiration.Operation;
 import model.CurrencyPair;
 import model.Symbol;
+import services.IOService;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -22,6 +23,8 @@ public class Wallet {
     private List<Symbol> list;
     private ObjectMapper objectMapper = new ObjectMapper();
     private int id;
+
+    private IOService ioService;
 
     public Wallet(int id) {
         this.id = id;
@@ -80,11 +83,11 @@ public class Wallet {
     }
 
     public void exchange(String fromCurr, String toCurr, int amount) {
-        fromCurr = fromCurr.toUpperCase();     //Возводим строку в верхний регитр
-        toCurr = toCurr.toUpperCase();
+        ioService.toUpperCase(fromCurr);   //Возводим строку в верхний региcтр
+        ioService.toUpperCase(toCurr);
         String pairOne = "";
         String pairTwo = "";
-        int newSum;  // Сумм после конвертации
+        int newSum;  // Сумма после конвертации
 
         Symbol found = pairSearcher(fromCurr, toCurr, pairOne, pairTwo);
 
@@ -128,7 +131,7 @@ public class Wallet {
     }
 
     public void add(String toCurr, int amount) {
-        toCurr = toCurr.toUpperCase();
+        ioService.toUpperCase(toCurr);
         if (currMAp.containsKey(toCurr)) {
             currMAp.put(toCurr, currMAp.get(toCurr) + amount);
             History add = new History.Builder()
@@ -143,7 +146,7 @@ public class Wallet {
                 writeHistoryLog(add);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
-                System.out.println("ошибка json exeption");
+                System.out.println("ошибка json exception");
             }
 
         } else {
@@ -153,7 +156,7 @@ public class Wallet {
     }
 
     public void cashIssue(String toCurr, int amount) {
-        toCurr = toCurr.toUpperCase();
+        ioService.toUpperCase(toCurr);
         if (currMAp.containsKey(toCurr)) {
             currMAp.put(toCurr, currMAp.get(toCurr) - amount);
             History add = new History.Builder()
