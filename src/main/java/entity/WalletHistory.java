@@ -2,7 +2,7 @@ package entity;
 
 import entity.enumiration.Operation;
 
-public class History {
+public class WalletHistory {
     Operation operation;
     private String fromCurr;
     private int sum;
@@ -10,12 +10,12 @@ public class History {
     private int oldAmount;
     private int newAmount;
 
-    public History(){}
+    public WalletHistory(){}
 
-    public History(Operation operation,
-                   String fromCurr, int oldAmount,
-                   int sum,
-                   String toCurr, int newAmount) {
+    public WalletHistory(Operation operation,
+                         String fromCurr, int oldAmount,
+                         int sum,
+                         String toCurr, int newAmount) {
         this.operation = operation;
         this.fromCurr = fromCurr;
         this.sum = sum;
@@ -85,8 +85,8 @@ public class History {
             this.newAmount = newAmount;
             return this;
         }
-        public History build() {
-            return new History(this.operation , this.fromCurr ,this.oldAmount, this.sum ,this.toCurr  ,this.newAmount);
+        public WalletHistory build() {
+            return new WalletHistory(this.operation , this.fromCurr ,this.oldAmount, this.sum ,this.toCurr  ,this.newAmount);
         }
     }
 }

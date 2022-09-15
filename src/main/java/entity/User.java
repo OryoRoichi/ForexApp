@@ -4,12 +4,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class User {
-    String name;
+    private Wallet wallet;
 
-    Wallet wallet;
+    private String login;
+    private String password;
 
-    public User(String name) {
-        this.wallet = new Wallet(1011);
-        this.name= name;
+    public User() {
+        this.wallet = new Wallet();
     }
 }

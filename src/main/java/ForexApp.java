@@ -1,5 +1,6 @@
 import data.DataSource;
 import entity.Wallet;
+import manager.WalletManager;
 import model.Symbol;
 import model.history.History;
 import model.history.Period;
@@ -15,19 +16,15 @@ public class ForexApp {
         DataSource dataSource = new DataSource();
         Symbol s = new Symbol();
         s.setSymbol("EUR/USD");
-        Wallet wallet = new Wallet(1011);
-//      Collection<History> test =  dataSource.getHistory(s,1, Period.DAY);
-//
-//        for(History elem : test){
-//            System.out.println(elem);
-//        }
-        wallet.exchange("usd","eur",10);
-        wallet.add("afr",100);
-        wallet.cashIssue("usd", 50);
-        wallet.add("usd", 0);
-        wallet.getHistoryById(1011);
+        Wallet wallet = new Wallet();
 
-        wallet.printCurrMap();
+        WalletManager manager = new WalletManager(wallet);
 
+        manager.exchangeFromTo("usd","eur",10);
+        manager.addCash("afr",100);
+        manager.cashIssue("usd", 50);
+
+        //manager.getHistory();
+        wallet.getCurrMAp();
     }
 }

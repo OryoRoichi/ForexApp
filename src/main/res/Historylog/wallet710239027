@@ -1,0 +1,5 @@
+
+{"operation":"EXCHANGE","fromCurr":"USD","sum":10,"toCurr":"EUR","oldAmount":100,"newAmount":9}
+{"operation":"ADD","fromCurr":"USD","sum":50,"toCurr":"USD","oldAmount":90,"newAmount":140}
+{"operation":"EXCHANGE","fromCurr":"USD","sum":10,"toCurr":"EUR","oldAmount":100,"newAmount":9}
+{"operation":"ADD","fromCurr":"USD","sum":50,"toCurr":"USD","oldAmount":90,"newAmount":140}
