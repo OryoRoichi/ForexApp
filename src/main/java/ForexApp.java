@@ -4,6 +4,7 @@ import manager.WalletManager;
 import model.Symbol;
 import model.history.History;
 import model.history.Period;
+import services.IOService;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -12,13 +13,27 @@ import java.util.List;
 
 public class ForexApp {
 
+
+
+
     public static void main(String[] args) {
         DataSource dataSource = new DataSource();
         Symbol s = new Symbol();
         s.setSymbol("EUR/USD");
         Wallet wallet = new Wallet();
-
         WalletManager manager = new WalletManager(wallet);
+    }
+}
+       /* DataSource dataSource = new DataSource();
+            }
+
+        wallet.exchange("usd","eur",10);
+        wallet.add("afr",100);
+        wallet.cashIssue("usd", 50);
+        wallet.add("usd", 0);
+        wallet.getHistoryById(1011);
+
+        wallet.printCurrMap();//
 
         manager.exchangeFromTo("usd","eur",10);
         manager.addCash("afr",100);
@@ -27,4 +42,4 @@ public class ForexApp {
         //manager.getHistory();
         wallet.getCurrMAp();
     }
-}
+} */

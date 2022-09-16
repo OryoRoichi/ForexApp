@@ -9,7 +9,7 @@ import entity.enumiration.Operation;
 import java.io.*;
 import java.util.Map;
 
-public class IOService {
+public class IOService implements IOServiceInterface {
     private BufferedReader reader;
     private ObjectMapper objectMapper ;
 
@@ -22,6 +22,7 @@ public class IOService {
     public void write(String message) {
         System.out.println(message);
     }
+
 
     public void writeHistoryLog(WalletHistory history,int id) throws JsonProcessingException {
         File directory = new File("src\\main\\res\\Historylog\\");
@@ -56,6 +57,15 @@ public class IOService {
         for (Map.Entry<String, Integer> entry : wallet.getCurrMAp().entrySet()) {
             System.out.println(entry);
         }
+    }
+
+    public void writeUnknownError() {
+        write("Неизвестная ошибка. Попробуйте еще раз");
+    }
+
+    public String toUpperCase(String str) {
+        return str.toUpperCase();
+
     }
 
 }

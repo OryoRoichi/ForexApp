@@ -6,6 +6,7 @@ import data.DataSource;
 import entity.enumiration.Operation;
 import model.CurrencyPair;
 import model.Symbol;
+import services.IOService;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -27,10 +28,6 @@ public class Wallet {
         this.currency = "USD";
         currMAp.put(currency, currentState);//упаковываем валюту в мапу
 
-    }
-
-    public int getCurrentState() {
-        return currentState;
     }
 
     public String getCurrency() {
