@@ -1,5 +1,7 @@
 package entity;
+
 import services.*;
+import util.StringUtils;
 
 import java.io.IOException;
 
@@ -7,7 +9,8 @@ public class MenuOperation {
 
     private IOServiceImpl ioService;
     private WalletServiceImpl walletService;
-    private  UserServiceImpl userService;
+    private UserServiceImpl userService;
+    private UserData currentUser;
 
     public MenuOperation() {
         System.out.println("MenuOperatione smth wrong");
@@ -16,7 +19,7 @@ public class MenuOperation {
         this.userService = new UserServiceImpl();
     }
 
-    public void operationChoose(Wallet wallet) throws IOException {
+    public void operationChoose() throws IOException {
         ioService.write("Выберите операцию:");
         ioService.write("Наберите 1 для обмена валюты");
         ioService.write("Наберите 2 для пополнения счета");
@@ -25,9 +28,9 @@ public class MenuOperation {
 
         ioService.write("Введите 'exit' для выхода");
         Integer operation = ioService.readOperation();
+        final Wallet wallet = currentUser.getWallet();
         switch (operation) {
             case 0:
-                wallet= null;
                 userService.logout(this);
             case 1:
                 ioService.write("Введите какую валюту вы хотите поменять (например 'USD', 'EUR' и тд)");
@@ -37,7 +40,7 @@ public class MenuOperation {
                 ioService.write("Введите сумму желаемой валюты");
                 int amount = Integer.parseInt(ioService.read());
                 walletService.exchange(fromCurr, toCurr, amount, wallet);
-                ifExit(wallet);
+                ifExit();
                 break;
             case 2:
                 ioService.write("Введите какую валюту вы хотите пополнить (например 'USD', 'EUR' и тд)");
@@ -45,20 +48,22 @@ public class MenuOperation {
                 ioService.write("Введите сумму желаемой валюты");
                 int sum = Integer.parseInt(ioService.read());
                 walletService.add(currency, sum, wallet);
-                ifExit(wallet);
+                ifExit();
                 break;
             case 3:
                 ioService.write("Введите какую валюту вы хотите снять (например 'USD', 'EUR' и тд)");
-                 currency = ioService.read();
+                currency = ioService.read();
                 ioService.write("Введите сумму желаемой валюты");
-                 sum = Integer.parseInt(ioService.read());
-                walletService.cashIssue(currency, sum, wallet);
-                ifExit(wallet);
+                StringUtils.toIntegerNullSafe(ioService.read())
+                        .ifPresentOrElse(
+                                value -> walletService.cashIssue(currency, value, wallet),
+                                () -> ioService.write("Не верный формат числа"));
+                ifExit();
                 break;
             case 4:
                 ioService.write("Ваша история транзакций");
                 ioService.readHistory(wallet);
-                ifExit(wallet);
+                ifExit();
 
                 break;
         }
@@ -80,49 +85,50 @@ public class MenuOperation {
                 break;
         }
     }
-    private  void authorization(){
+
+    private void authorization() {
         ioService.write("ENTER Your Login");
         String login = ioService.read();
         ioService.write("ENTER Your Password");
         String password = ioService.read();
-        UserData user= userService.authorization(login,password);
-        if(user !=null ){
+        UserData user = userService.authorization(login, password);
+        if (user != null) {
             try {
-                operationChoose(user.getWallet());
+                this.currentUser = user;
+                operationChoose();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }else {
+        } else {
             ioService.write("wrong login or password");
             enterMessage();
         }
     }
-    private void registration(){
+
+    private void registration() {
         ioService.write("To create new account You have to create login and password");
         ioService.write("Your Login");
         String login = ioService.read();
         ioService.write("Your Password");
         String password = ioService.read();
-        if(userService.registration(login,password)== null){
+        if (userService.registration(login, password) == null) {
             ioService.write("Such user is already exist");
-        }else{
+        } else {
             ioService.write("You Successfully create new account");
             enterMessage();
         }
     }
 
 
-
-
-    public void ifExit(Wallet wallet) {
+    public void ifExit() {
         ioService.write("Желаете ли продолжить? y/n");
         try {
             if (ioService.read().equals("y")) {
-                operationChoose(wallet);
+                operationChoose();
             }
         } catch (IOException e) {
             ioService.writeUnknownError();
-            ifExit(wallet);
+            ifExit();
         }
     }
 

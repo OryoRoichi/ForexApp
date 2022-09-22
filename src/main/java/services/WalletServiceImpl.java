@@ -7,6 +7,7 @@ import entity.WalletHistory;
 import entity.enumiration.Operation;
 import model.CurrencyPair;
 import model.Symbol;
+import util.StringUtils;
 
 import java.util.List;
 
@@ -24,8 +25,8 @@ public class WalletServiceImpl  implements WalletService{
     }
 
     private Symbol pairSearcher(String fromCurr, String toCurr) {
-        String pairOne = fromCurr + "/" + toCurr;  //Создаём пару
-        String pairTwo = toCurr + "/" + fromCurr;
+        String pairOne = StringUtils.concatToPair(fromCurr, toCurr);  //Создаём пару
+        String pairTwo = StringUtils.concatToPair(toCurr, fromCurr);
         for (Symbol symbol : list) {  //ищем в списке нужную пару символов, которую будем использовать при обмене
             if (symbol.getSymbol().equals(pairOne) || symbol.getSymbol().equals(pairTwo)) {
                 return symbol;
@@ -36,8 +37,6 @@ public class WalletServiceImpl  implements WalletService{
 
     public void exchange(String fromCurr, String toCurr, int amount, Wallet wallet) {
         int newSum;// Сумм после конвертации
-        fromCurr = fromCurr.toUpperCase();//Возводим строку в верхний регитр
-        toCurr = toCurr.toUpperCase();
 
         Symbol found = pairSearcher(fromCurr, toCurr);
 
@@ -46,7 +45,7 @@ public class WalletServiceImpl  implements WalletService{
             return;
         }
 
-        int sumInWallet = wallet.getCurrMAp().get(fromCurr);  //проверяем хватает ли денег в кашельке
+        int sumInWallet = wallet.getCurrencyValue(fromCurr);  //проверяем хватает ли денег в кашельке
         if (sumInWallet < amount) {
             System.out.println("Недостаточно средств");
             return;
@@ -66,14 +65,14 @@ public class WalletServiceImpl  implements WalletService{
 
         newSum = (int) (amount / currencyPairs.get(0).getPrice());
 
-        wallet.getCurrMAp().put(fromCurr, wallet.getCurrMAp().get(fromCurr) - amount);
-        wallet.getCurrMAp().put(toCurr, newSum);
+        wallet.updateSum(fromCurr, wallet.getCurrencyValue(fromCurr) - amount);
+        wallet.updateSum(toCurr, newSum);
         WalletHistory exchange = new WalletHistory.Builder()
                 .operation(Operation.EXCHANGE)
                 .fromCurr(fromCurr)
-                .oldAmount(wallet.getCurrMAp().get(fromCurr) + amount)
+                .oldAmount(wallet.getCurrencyValue(fromCurr) + amount)
                 .toCurr(toCurr)
-                .newAmount(wallet.getCurrMAp().get(toCurr))
+                .newAmount(wallet.getCurrencyValue(toCurr))
                 .sum(amount)
                 .build();
         try {
@@ -85,14 +84,14 @@ public class WalletServiceImpl  implements WalletService{
 
     public void add(String toCurr, int amount,Wallet wallet) {
         toCurr = toCurr.toUpperCase();
-        if (wallet.getCurrMAp().containsKey(toCurr)) {
-            wallet.getCurrMAp().put(toCurr, wallet.getCurrMAp().get(toCurr) + amount);
+        if (wallet.isCurrencyPresent(toCurr)) {
+            wallet.updateSum(toCurr, wallet.getCurrencyValue(toCurr) + amount);
             WalletHistory add = new WalletHistory.Builder()
                     .operation(Operation.ADD)
                     .fromCurr(toCurr)
-                    .oldAmount(wallet.getCurrMAp().get(toCurr) - amount)
+                    .oldAmount(wallet.getCurrencyValue(toCurr) - amount)
                     .toCurr(toCurr)
-                    .newAmount(wallet.getCurrMAp().get(toCurr))
+                    .newAmount(wallet.getCurrencyValue(toCurr))
                     .sum(amount)
                     .build();
             try {
@@ -110,14 +109,14 @@ public class WalletServiceImpl  implements WalletService{
 
     public void cashIssue(String toCurr, int amount, Wallet wallet) {
         toCurr = toCurr.toUpperCase();
-        if (wallet.getCurrMAp().containsKey(toCurr)) {
-            wallet.getCurrMAp().put(toCurr, wallet.getCurrMAp().get(toCurr) - amount);
+        if (wallet.isCurrencyPresent(toCurr)) {
+            wallet.updateSum(toCurr, wallet.getCurrencyValue(toCurr) - amount);
             WalletHistory issue = new WalletHistory.Builder()
                     .operation(Operation.ISSUE)
                     .fromCurr(toCurr)
-                    .oldAmount(wallet.getCurrMAp().get(toCurr) + amount)
+                    .oldAmount(wallet.getCurrencyValue(toCurr) + amount)
                     .toCurr(toCurr)
-                    .newAmount(wallet.getCurrMAp().get(toCurr))
+                    .newAmount(wallet.getCurrencyValue(toCurr))
                     .sum(amount)
                     .build();
             try {

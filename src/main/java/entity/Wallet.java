@@ -18,8 +18,16 @@ public class Wallet {
         currMAp.put(currency, currentState);//упаковываем валюту в мапу
     }
 
-    public Map<String, Integer> getCurrMAp() {
-        return currMAp;
+    public void updateSum(String currency, int sum) {
+        currMAp.put(currency, sum);
+    }
+
+    public Integer getCurrencyValue(String currency) {
+        return currMAp.get(currency);
+    }
+
+    public boolean isCurrencyPresent(String currency) {
+        return currMAp.containsKey(currency);
     }
 
     public int getId() {
