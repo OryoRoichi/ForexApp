@@ -67,11 +67,11 @@ public class MenuOperation {
     public void enterMessage() {
         ioService.write("Наберите 1 Для того чтобы  зайти на свой кошелек");
         ioService.write("Наберите 2 Для регистрации");
-        ioService.write("Введите 0 для выхода");
+        ioService.write("Введите exit для выхода");
         Integer operation = ioService.readOperation();
         switch (operation) {
             case 0:
-                return;
+                System.exit(0);
             case 1:
                 authorization();
                 break;

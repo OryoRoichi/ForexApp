@@ -34,7 +34,7 @@ public class IOServiceImpl implements IOService {
     public void writeHistoryLog(WalletHistory history, int id) throws JsonProcessingException {
         File directory = new File("src\\main\\res\\Historylog\\");
         String json = objectMapper.writeValueAsString(history);
-        String historyFileName = "wallet" + id + ".json";
+        String historyFileName = "wallet" + id;
         File name = new File(getFileName(directory, historyFileName));
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(name, true))) {
             writer.write(json + "\n");
