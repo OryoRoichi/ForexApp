@@ -1,27 +1,10 @@
-import data.DataSource;
-import entity.Wallet;
 import manager.WalletManager;
-import model.Symbol;
-import model.history.History;
-import model.history.Period;
-import services.IOService;
-
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 
 public class ForexApp {
-
-
-
-
     public static void main(String[] args) {
-        DataSource dataSource = new DataSource();
-        Symbol s = new Symbol();
-        s.setSymbol("EUR/USD");
-        Wallet wallet = new Wallet();
-        WalletManager manager = new WalletManager(wallet);
+        WalletManager manager = new WalletManager();
+
+        manager.run();
     }
 }
        /* DataSource dataSource = new DataSource();
@@ -33,13 +16,7 @@ public class ForexApp {
         wallet.add("usd", 0);
         wallet.getHistoryById(1011);
 
-        wallet.printCurrMap();//
-
-        manager.exchangeFromTo("usd","eur",10);
-        manager.addCash("afr",100);
-        manager.cashIssue("usd", 50);
-
-        //manager.getHistory();
+        wallet.printCurrMap();/
         wallet.getCurrMAp();
     }
 } */
