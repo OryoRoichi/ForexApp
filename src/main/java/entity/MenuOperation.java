@@ -10,6 +10,7 @@ public class MenuOperation {
     private  UserServiceImpl userService;
 
     public MenuOperation() {
+        System.out.println("MenuOperatione smth wrong");
         this.ioService = new IOServiceImpl();
         this.walletService = new WalletServiceImpl();
         this.userService = new UserServiceImpl();
@@ -27,7 +28,7 @@ public class MenuOperation {
         switch (operation) {
             case 0:
                 wallet= null;
-                userService.logout();
+                userService.logout(this);
             case 1:
                 ioService.write("Введите какую валюту вы хотите поменять (например 'USD', 'EUR' и тд)");
                 String fromCurr = ioService.read();
@@ -109,6 +110,8 @@ public class MenuOperation {
             enterMessage();
         }
     }
+
+
 
 
     public void ifExit(Wallet wallet) {

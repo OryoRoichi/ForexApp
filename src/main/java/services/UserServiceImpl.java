@@ -2,39 +2,43 @@ package services;
 
 import entity.MenuOperation;
 import entity.UserData;
+import entity.UserListData;
 
-import static entity.UserData.listOfUser;
 
 public class UserServiceImpl implements UserService {
-    private MenuOperation menu;
+
+    private UserListData userListData;
 
     public UserServiceImpl() {
-
-        this.menu = new MenuOperation();
+        userListData = new UserListData();
     }
 
     @Override
     public UserData registration(String login, String password) {
-        for (int i = 0; i < listOfUser.size(); i++) {
-            if (listOfUser.get(i).getLogin() == login && listOfUser.get(i).getPassword() == password) {
+        for (int i = 0; i < userListData.getListOfUser().size(); i++) {
+            if (userListData.getListOfUser().get(i).getLogin().equals(login) &&
+                    userListData.getListOfUser().get(i).getPassword().equals(password)) {
                 return null;
             }
         }
-        return new UserData(login, password);
+        UserData newUser = new UserData(login, password);
+        userListData.getListOfUser().add(newUser);
+        return newUser;
     }
 
     @Override
     public UserData authorization(String login, String password) {
-        for (int i = 0; i < listOfUser.size(); i++) {
-            if (listOfUser.get(i).getLogin() == login && listOfUser.get(i).getPassword() == password) {
-                return listOfUser.get(i);
+        for (int i = 0; i < userListData.getListOfUser().size(); i++) {
+            if (userListData.getListOfUser().get(i).getLogin().equals(login) &&
+                    userListData.getListOfUser().get(i).getPassword().equals(password)) {
+                return userListData.getListOfUser().get(i);
             }
         }
         return null;
     }
 
     @Override
-    public void logout() {
+    public void logout(MenuOperation menu) {
         menu.enterMessage();
     }
 

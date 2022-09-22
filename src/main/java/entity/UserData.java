@@ -5,14 +5,15 @@ import java.util.List;
 
 public class UserData {
 
-    public static List<UserData> listOfUser;
+
     private Wallet wallet;
     private String login;
     private String password;
+    private UserListData listData;
 
 
     public UserData() {
-        listOfUser = new ArrayList<>();
+
     }
 
     public UserData(String login, String password) {
@@ -20,7 +21,6 @@ public class UserData {
         this.login = login;
         this.password = password;
 
-        listOfUser.add(this);
     }
 
     public String getLogin() {

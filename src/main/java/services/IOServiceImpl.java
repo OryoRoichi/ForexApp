@@ -23,6 +23,7 @@ public class IOServiceImpl implements IOService {
             return reader.readLine();
         } catch (IOException e) {
             throw new RuntimeException(e);
+
         }
     }
 
