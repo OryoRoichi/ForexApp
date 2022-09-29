@@ -88,5 +88,17 @@ public class WalletHistory {
         public WalletHistory build() {
             return new WalletHistory(this.operation , this.fromCurr ,this.oldAmount, this.sum ,this.toCurr  ,this.newAmount);
         }
+
+        @Override
+        public String toString() {
+            return "Builder{" +
+                    "operation=" + operation +
+                    ", fromCurr='" + fromCurr + '\'' +
+                    ", sum=" + sum +
+                    ", toCurr='" + toCurr + '\'' +
+                    ", oldAmount=" + oldAmount +
+                    ", newAmount=" + newAmount +
+                    '}';
+        }
     }
 }

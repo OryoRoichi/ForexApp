@@ -1,11 +1,18 @@
 package services;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import entity.Wallet;
 import entity.WalletHistory;
+import model.history.History;
+import org.json.JSONArray;
+import org.json.JSONObject;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 public class IOServiceImpl implements IOService {
@@ -32,12 +39,12 @@ public class IOServiceImpl implements IOService {
     }
 
     public void writeHistoryLog(WalletHistory history, int id) throws JsonProcessingException {
-        File directory = new File("src\\main\\res\\Historylog\\");
-        String json = objectMapper.writeValueAsString(history);
-        String historyFileName = "wallet" + id;
+        File directory = new File("src\\main\\resources\\Historylog\\");
+        String historyFileName = "wallet" + id + ".json";
         File name = new File(getFileName(directory, historyFileName));
+        String json = objectMapper.writeValueAsString(history);
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(name, true))) {
-            writer.write(json + "\n");
+            writer.write(json);
         } catch (IOException e) {
             System.out.println(" err: cant wright to JSON");
         }
@@ -48,21 +55,18 @@ public class IOServiceImpl implements IOService {
     }
 
     public void readHistory(Wallet wallet) throws IOException {
-        File file = new File("src\\main\\res\\Historylog\\" + "wallet" + wallet.getId());
+        File file = new File("src\\main\\resources\\Historylog\\" + "wallet" + wallet.getId() + ".json");
         BufferedReader reader = new BufferedReader(new FileReader(file));
-        String str;
-//        List<History> historyList = new ArrayList<>();
-//        History tmp = objectMapper.readValue(reader, History.class);
-//        if(tmp.getOperation() == operation){
-//            while ((str = reader.readLine()) != null)
-//            {
-//                historyList = reader.readLine();
-//                System.out.println(str);
-//            }
-//        }
-        while ((str = reader.readLine()) != null) {
-            System.out.println(str);
+        List<WalletHistory> list = new ArrayList<>();
+        String tmpStr;
+        while (reader.readLine() != null) {
+            tmpStr = reader.readLine();
         }
+
+        list = objectMapper.readValue((Reader) reader, (JavaType) list);
+        list.stream().forEach((elem)-> System.out.println(elem));
+
+
     }
 
     public void writeUnknownError() {

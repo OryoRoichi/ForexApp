@@ -4,6 +4,8 @@ import entity.MenuOperation;
 import entity.UserData;
 import entity.UserListData;
 
+import java.util.Optional;
+
 
 public class UserServiceImpl implements UserService {
 
@@ -14,27 +16,27 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserData registration(String login, String password) {
+    public Optional<UserData> registration(String login, String password) {
         for (int i = 0; i < userListData.getListOfUser().size(); i++) {
             if (userListData.getListOfUser().get(i).getLogin().equals(login) &&
                     userListData.getListOfUser().get(i).getPassword().equals(password)) {
-                return null;
+                return Optional.empty();
             }
         }
         UserData newUser = new UserData(login, password);
         userListData.getListOfUser().add(newUser);
-        return newUser;
+        return Optional.of(newUser);
     }
 
     @Override
-    public UserData authorization(String login, String password) {
+    public Optional<UserData> authorization(String login, String password) {
         for (int i = 0; i < userListData.getListOfUser().size(); i++) {
             if (userListData.getListOfUser().get(i).getLogin().equals(login) &&
                     userListData.getListOfUser().get(i).getPassword().equals(password)) {
-                return userListData.getListOfUser().get(i);
+                return Optional.of(userListData.getListOfUser().get(i));
             }
         }
-        return null;
+        return Optional.empty();
     }
 
     @Override
