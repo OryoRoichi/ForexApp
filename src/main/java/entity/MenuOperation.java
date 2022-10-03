@@ -14,13 +14,13 @@ public class MenuOperation {
     private UserData currentUser;
 
     public MenuOperation() {
-        System.out.println("MenuOperatione smth wrong");
         this.ioService = new IOServiceImpl();
         this.walletService = new WalletServiceImpl();
         this.userService = new UserServiceImpl();
     }
 
     public void operationChoose() throws IOException {
+        final Wallet wallet = currentUser.getWallet();
         ioService.write("Выберите операцию:");
         ioService.write("Наберите 1 для обмена валюты");
         ioService.write("Наберите 2 для пополнения счета");
@@ -28,7 +28,7 @@ public class MenuOperation {
         ioService.write("Наберите 4 для просмотра вашей истории транзакций");
 
         ioService.write("Введите 'exit' для выхода");
-        final Wallet wallet = currentUser.getWallet();
+
         Integer operation = ioService.readOperation();
         switch (operation) {
             case 0:

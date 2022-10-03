@@ -8,6 +8,7 @@ public class Wallet {
     private int currentState;
     private String currency;
     private Map<String, Integer> currMAp;//Map<Currency,currentState>
+    private  WalletHistoryList historyList;
     private final int id;
 
     public Wallet() {
@@ -16,6 +17,7 @@ public class Wallet {
         this.currentState = 0;
         this.currency = "USD";
         currMAp.put(currency, currentState);//упаковываем валюту в мапу
+        this.historyList = new WalletHistoryList();
     }
 
     public void updateSum(String currency, int sum) {
@@ -29,10 +31,18 @@ public class Wallet {
     public boolean isCurrencyPresent(String currency) {
         return currMAp.containsKey(currency);
     }
+    public void addToHistoryList(WalletHistory historyNote) {
+        this.historyList.addToList(historyNote);
+    }
 
     public int getId() {
         return id;
     }
+
+    public WalletHistoryList getHistoryList() {
+        return historyList;
+    }
+
     @Override
     public String toString() {
         return "Wallet{" +

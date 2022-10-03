@@ -71,7 +71,8 @@ public class WalletServiceImpl  implements WalletService{
                 .sum(amount)
                 .build();
         try {
-            ioService.writeHistoryLog(exchange, wallet.getId());
+            wallet.addToHistoryList(exchange);
+            ioService.writeHistoryLog(wallet);
         } catch (JsonProcessingException e) {
             System.out.println("ошибка json exeption");
         }
@@ -90,7 +91,8 @@ public class WalletServiceImpl  implements WalletService{
                     .sum(amount)
                     .build();
             try {
-                ioService.writeHistoryLog(add, wallet.getId());
+                wallet.addToHistoryList(add);
+                ioService.writeHistoryLog(wallet);
             } catch (JsonProcessingException e) {
                 e.printStackTrace();
                 System.out.println("ошибка json exeption");
@@ -115,7 +117,8 @@ public class WalletServiceImpl  implements WalletService{
                     .sum(amount)
                     .build();
             try {
-                ioService.writeHistoryLog(issue, wallet.getId());
+                wallet.addToHistoryList(issue);
+                ioService.writeHistoryLog(wallet);
             } catch (JsonProcessingException e) {
                 System.out.println("ошибка json exeption");
             }

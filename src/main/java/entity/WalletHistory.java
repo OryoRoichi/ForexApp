@@ -48,6 +48,18 @@ public class WalletHistory {
         return newAmount;
     }
 
+    @Override
+    public String toString() {
+        return "WalletHistory{" +
+                "operation=" + operation +
+                ", fromCurr='" + fromCurr + '\'' +
+                ", sum=" + sum +
+                ", toCurr='" + toCurr + '\'' +
+                ", oldAmount=" + oldAmount +
+                ", newAmount=" + newAmount +
+                '}';
+    }
+
     public static class Builder {
 
         Operation operation;
@@ -89,16 +101,5 @@ public class WalletHistory {
             return new WalletHistory(this.operation , this.fromCurr ,this.oldAmount, this.sum ,this.toCurr  ,this.newAmount);
         }
 
-        @Override
-        public String toString() {
-            return "Builder{" +
-                    "operation=" + operation +
-                    ", fromCurr='" + fromCurr + '\'' +
-                    ", sum=" + sum +
-                    ", toCurr='" + toCurr + '\'' +
-                    ", oldAmount=" + oldAmount +
-                    ", newAmount=" + newAmount +
-                    '}';
-        }
     }
 }
